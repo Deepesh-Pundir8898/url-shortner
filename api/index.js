@@ -2,6 +2,12 @@ import fs from "node:fs";
 import express from "express";
 
 import  {nanoid} from "nanoid";
+import { fileURLToPath } from 'url';
+import path from 'path';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 
 const app = express();
 
@@ -25,7 +31,8 @@ const hasValue = (obj, value) => Object.values(obj).includes(value);
 
 
 app.get("/",(req,res)=>{
-    res.sendFile(import.meta.dirname +"\\form.html")
+    res.sendFile(path.join(__dirname, "form.html"));
+
 })
 app.post("/shortner-url",(req,res)=>{
 
