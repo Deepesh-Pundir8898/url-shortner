@@ -82,5 +82,6 @@ app.get("/:shortUrl",(req,res)=>{
     res.redirect(longUrl);
 })
 
-app.listen("8080",()=>console.log("Server is runnning at port 8080"))
+// app.listen("8080",()=>console.log("Server is runnning at port 8080"))
 
+export default app;
