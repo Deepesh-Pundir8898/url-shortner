@@ -123,6 +123,7 @@ const hasValue = (obj, value) => Object.values(obj).includes(value);
 
 // Route: Serve the form
 app.get("/", (req, res) => {
+    console.log(__dirname)
     res.sendFile(path.join(__dirname, "../form.html"));
 });
 
