@@ -96,16 +96,21 @@
 import fs from "fs";
 import express from "express";
 import { nanoid } from "nanoid";
-import { fileURLToPath } from "url";
 import path from "path";
+import { fileURLToPath } from "url";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
+
+// Serve static files from the public directory
+app.use(express.static(path.join(__dirname, "../public")));
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// Helper functions
 const isUrlValid = (url) => {
     try {
         new URL(url);
@@ -115,19 +120,12 @@ const isUrlValid = (url) => {
     }
 };
 
-const getKeyByValue = (object, value) => {
-    return Object.keys(object).find((key) => object[key] === value);
-};
+const getKeyByValue = (object, value) =>
+    Object.keys(object).find((key) => object[key] === value);
 
 const hasValue = (obj, value) => Object.values(obj).includes(value);
 
-// Route: Serve the form
-app.get("/", (req, res) => {
-    console.log(__dirname)
-    res.sendFile(path.join(__dirname, "../form.html"));
-});
-
-// Route: Shorten URL
+// Shorten URL
 app.post("/shortner-url", (req, res) => {
     try {
         const isValid = isUrlValid(req.body.longUrl);
@@ -150,24 +148,27 @@ app.post("/shortner-url", (req, res) => {
             return res.json({
                 success: true,
                 message: "URL Shortner API",
-                result: `https://url-shortner-qvon-lqa3t4fvs-deepesh-pundir8898s-projects.vercel.app/${preShortnerUrl}`,
+                result: `https://${req.headers.host}/${preShortnerUrl}`,
             });
         }
         newData[0][shortUrl] = req.body.longUrl;
 
-        fs.writeFileSync(path.join(__dirname, "../urlMap.json"), JSON.stringify(newData));
+        fs.writeFileSync(
+            path.join(__dirname, "../urlMap.json"),
+            JSON.stringify(newData)
+        );
 
         res.json({
             success: true,
             message: "URL Shortner API",
-            result: `https://url-shortner-qvon-lqa3t4fvs-deepesh-pundir8898s-projects.vercel.app/${shortUrl}`,
+            result: `https://${req.headers.host}/${shortUrl}`,
         });
     } catch (error) {
         console.log("post shortner api error:", error);
     }
 });
 
-// Route: Redirect shortened URL
+// Redirect to the original URL
 app.get("/:shortUrl", (req, res) => {
     const shortUrl = req.params.shortUrl;
 
