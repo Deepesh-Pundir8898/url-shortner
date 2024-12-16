@@ -110,6 +110,11 @@ app.use(express.static(path.join(__dirname, "../public")));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+app.get("/",(req,res)=>{
+    res.sendFile(path.join(__dirname, "form.html"));
+
+})
+
 // Helper functions
 const isUrlValid = (url) => {
     try {
@@ -186,4 +191,5 @@ app.get("/:shortUrl", (req, res) => {
     }
 });
 
+app.listen(8080 ,()=>{console.log("Sever is Starting on PORT: 8080")})
 export default app;
