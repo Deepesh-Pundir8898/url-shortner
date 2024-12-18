@@ -1,15 +1,15 @@
-import fs from "node:fs";
 import express from "express";
+import fs from "node:fs";
 
 import  {nanoid} from "nanoid";
 import { fileURLToPath } from 'url';
 import path from 'path';
+const app = express();
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 
-const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded())
