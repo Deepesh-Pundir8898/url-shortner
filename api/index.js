@@ -110,10 +110,7 @@ app.use(express.static(path.join(__dirname, "../public")));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.get("/",(req,res)=>{
-    res.sendFile(path.join(__dirname, "form.html"));
 
-})
 
 // Helper functions
 const isUrlValid = (url) => {
@@ -129,6 +126,11 @@ const getKeyByValue = (object, value) =>
     Object.keys(object).find((key) => object[key] === value);
 
 const hasValue = (obj, value) => Object.values(obj).includes(value);
+
+app.get("/",(req,res)=>{
+    res.sendFile(path.join(__dirname, "./form.html"));
+
+})
 
 // Shorten URL
 app.post("/shortner-url", (req, res) => {
